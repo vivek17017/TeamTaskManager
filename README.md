@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Team Task Manager
 
 A full-stack web application built with **Next.js (App Router)**, **Prisma**, **PostgreSQL/SQLite**, and **Tailwind CSS**.
@@ -85,3 +86,6 @@ To deploy this application to Railway, follow these exact steps:
 3. **Register a Member:** Open an incognito window, go to `/register`, and select **Member**.
 4. **Assign Tasks:** Go back to your Admin window, open the newly created project, and create tasks. Assign one to the Member you just created.
 5. **Update Task Status:** Go to the Member window, view the project, and change the task status to "In Progress".
+=======
+# TeamTaskManager
+>>>>>>> 3f47beec362a8fbc628e2cd3565bd95bd1d2f592
