@@ -56,7 +56,7 @@ export async function POST(req: Request) {
     const result = taskSchema.safeParse(body);
 
     if (!result.success) {
-      return NextResponse.json({ error: result.error.errors[0].message }, { status: 400 });
+      return NextResponse.json({ error: result.error.issues[0].message }, { status: 400 });
     }
 
     const { title, description, projectId, assignedToId, dueDate } = result.data;

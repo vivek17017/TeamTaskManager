@@ -11,19 +11,21 @@ const updateTaskSchema = z.object({
   dueDate: z.string().optional().transform((str) => str ? new Date(str) : undefined),
 });
 
-export async function PUT(req: Request, { params }: { params: { id: string } }) {
+export async function PUT(req: Request, props: { params: Promise<{ id: string }> }) {
   try {
+    const params = await props.params;
+    const { id } = params;
+
     const user = await getUserFromRequest(req);
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { id } = params;
     const body = await req.json();
     const result = updateTaskSchema.safeParse(body);
 
     if (!result.success) {
-      return NextResponse.json({ error: result.error.errors[0].message }, { status: 400 });
+      return NextResponse.json({ error: result.error.issues[0].message }, { status: 400 });
     }
 
     const task = await prisma.task.findUnique({ where: { id } });
@@ -60,8 +62,11 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
   }
 }
 
-export async function DELETE(req: Request, { params }: { params: { id: string } }) {
+export async function DELETE(req: Request, props: { params: Promise<{ id: string }> }) {
   try {
+    const params = await props.params;
+    const { id } = params;
+    
     const user = await getUserFromRequest(req);
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -71,7 +76,6 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
       return NextResponse.json({ error: 'Forbidden: Admins only' }, { status: 403 });
     }
 
-    const { id } = params;
     await prisma.task.delete({ where: { id } });
 
     return NextResponse.json({ message: 'Task deleted successfully' });
